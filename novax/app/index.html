@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>NOVAX</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,600;14..32,700;14..32,800;14..32,900&display=swap">
+<style>
+:root{
+  --bg:#03060c;
+  --navy:#0b1426;
+  --line:rgba(190,205,230,.16);
+  --glass:rgba(150,175,215,.07);
+  --text:#e9eef6;
+  --mute:#8592a6;
+  --accent:#9db8dc;
+  --f:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--f);font-weight:600;font-size:15px;line-height:1.45}
+body{min-height:100vh;background:
+  radial-gradient(120% 60% at 50% -10%,rgba(48,92,170,.28),transparent 60%),
+  linear-gradient(180deg,var(--navy),var(--bg) 55%);
+  background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.35;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:44px 44px;mask-image:radial-gradient(80% 50% at 50% 0%,#000,transparent 75%);-webkit-mask-image:radial-gradient(80% 50% at 50% 0%,#000,transparent 75%)}
+.wrap{position:relative;max-width:560px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) calc(110px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+img{display:block;max-width:100%}
+
+/* шапка */
+.top{display:flex;justify-content:space-between;align-items:center;padding-block:6px 18px}
+.logo{font-weight:900;font-size:22px;letter-spacing:.06em;display:inline-block;transform:scaleY(1.45);transform-origin:left center}
+.tag{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.wish{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mute)}
+.wish b{min-width:22px;height:22px;border-radius:11px;display:grid;place-items:center;background:var(--glass);border:1px solid var(--line);color:var(--text);font-size:12px}
+
+/* первый экран */
+.hero{position:relative;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#05080f}
+.hero img{width:100%;aspect-ratio:16/9;object-fit:cover;opacity:.92}
+.hero .cap{position:absolute;left:0;right:0;bottom:0;padding:18px;background:linear-gradient(transparent,rgba(3,6,12,.9));display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.h1{margin:0;font-weight:900;font-size:30px;line-height:.9;text-transform:uppercase;transform:scaleY(1.5);transform-origin:left bottom;letter-spacing:.01em}
+.pill{flex:none;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:99px;background:rgba(157,184,220,.14);border:1px solid rgba(157,184,220,.35);color:var(--accent)}
+.lead{color:var(--mute);margin:14px 2px 0}
+
+/* фильтр */
+.cats{display:flex;gap:8px;overflow-x:auto;margin:22px -16px 14px;padding:0 16px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat{flex:none;padding:9px 14px;border-radius:99px;border:1px solid var(--line);background:var(--glass);font-size:14px;color:var(--mute);transition:background .3s,color .3s,border-color .3s}
+.cat[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+
+/* сетка */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{position:relative;text-align:left;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(150,175,215,.09),rgba(150,175,215,.03));padding:10px 12px 14px;display:grid;gap:8px;min-width:0;opacity:0;transform:translateY(10px);animation:in .7s cubic-bezier(.16,1,.3,1) forwards}
+.card .ph{aspect-ratio:1;border-radius:14px;background:radial-gradient(70% 60% at 50% 40%,rgba(120,150,200,.16),transparent 70%)}
+.card .ph img{width:100%;height:100%;object-fit:contain}
+.card .nm{font-weight:800;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.card .ds{font-size:13px;color:var(--mute);margin-top:-6px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pr{font-size:14px;font-variant-numeric:tabular-nums}
+.dots{display:flex;gap:4px}
+.dots i{width:10px;height:10px;border-radius:50%;border:1px solid rgba(255,255,255,.25)}
+.card .heart{position:absolute;top:12px;right:12px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+@keyframes in{to{opacity:1;transform:none}}
+
+/* о бренде */
+.info{margin-top:26px;display:grid;gap:10px}
+.box{border-radius:20px;border:1px solid var(--line);background:var(--glass);padding:16px}
+.box h3{margin:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);font-weight:700}
+.box p{margin:0}
+.box ul{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.box li{display:flex;justify-content:space-between;gap:10px}
+.box li span:last-child{color:var(--mute)}
+
+/* карточка товара */
+.sheet{position:fixed;inset:0;z-index:20;display:none}
+.sheet.open{display:block}
+.shade{position:absolute;inset:0;background:rgba(2,4,9,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .4s}
+.panel{position:absolute;left:0;right:0;bottom:0;max-height:92vh;overflow:auto;border-radius:26px 26px 0 0;border-top:1px solid var(--line);
+  background:linear-gradient(180deg,#0d172b,#060a13);padding:10px max(18px,env(safe-area-inset-right)) calc(110px + env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));
+  transform:translateY(100%);transition:transform .55s cubic-bezier(.16,1,.3,1)}
+.sheet.show .shade{opacity:1}
+.sheet.show .panel{transform:none}
+.grab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 12px}
+.big{aspect-ratio:1;max-width:420px;margin:0 auto;background:radial-gradient(60% 55% at 50% 45%,rgba(120,150,200,.2),transparent 70%)}
+.big img{width:100%;height:100%;object-fit:contain;transition:opacity .25s}
+.ttl{font-weight:900;font-size:24px;text-transform:uppercase;transform:scaleY(1.4);transform-origin:left;margin:10px 0 4px}
+.sub{color:var(--mute);margin:0 0 14px}
+.lbl{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:16px 0 8px;font-weight:700}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{padding:9px 14px;border-radius:12px;border:1px solid var(--line);background:var(--glass);display:flex;align-items:center;gap:8px;font-size:14px}
+.opt i{width:14px;height:14px;border-radius:50%;border:1px solid rgba(255,255,255,.3)}
+.opt[aria-pressed="true"]{border-color:var(--text);background:rgba(233,238,246,.1)}
+.spec{margin:0;padding:0;list-style:none;display:grid;gap:6px;color:var(--mute)}
+.spec li::before{content:"— "}
+.close{position:absolute;top:14px;right:16px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--glass);font-size:18px;line-height:1}
+
+.cta{display:none}
+.cta.web{display:block;position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:30;max-width:528px;margin:0 auto;padding:16px;border-radius:16px;background:var(--text);color:var(--bg);font-weight:800;text-align:center}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.card{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <span class="logo">NOVAX</span>
+    <span class="wish">мой список <b id="wcount">0</b></span>
+  </header>
+
+  <section class="hero">
+    <img src="img/d-puffer.jpg" alt="пуховики NOVAX в четырёх цветах">
+    <div class="cap">
+      <h1 class="h1">дроп 001<br>ниже нуля</h1>
+      <span class="pill">скоро</span>
+    </div>
+  </section>
+  <p class="lead">первая коллекция: пуховики, худи, свитшоты, футболки и аксессуары. четыре цвета: тёмный, тёмно-синий, коричневый, графит. отметь вещи, и бот напишет, когда откроем продажи.</p>
+
+  <nav class="cats" id="cats" aria-label="категории"></nav>
+  <main class="grid" id="grid"></main>
+
+  <section class="info">
+    <div class="box">
+      <h3>как это работает</h3>
+      <p>нажми на вещь, выбери цвет и размер, добавь в список. перед стартом продаж бот пришлёт напоминание, а ты купишь раньше всех.</p>
+    </div>
+    <div class="box">
+      <h3>размеры</h3>
+      <ul>
+        <li><span>S</span><span>рост 160–170</span></li>
+        <li><span>M</span><span>170–180</span></li>
+        <li><span>L</span><span>180–188</span></li>
+        <li><span>XL</span><span>188+</span></li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<div class="sheet" id="sheet" aria-hidden="true">
+  <div class="shade" id="shade"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="pt">
+    <div class="grab"></div>
+    <button class="close" id="close" aria-label="закрыть">×</button>
+    <div class="big"><img id="pimg" alt=""></div>
+    <div class="ttl" id="pt"></div>
+    <p class="sub" id="pd"></p>
+    <div class="row"><span class="pr" id="pp"></span><span class="tag">предзаказ</span></div>
+    <div class="lbl">цвет</div>
+    <div class="opts" id="pc"></div>
+    <div class="lbl" id="szl">размер</div>
+    <div class="opts" id="ps"></div>
+    <div class="lbl">детали</div>
+    <ul class="spec" id="px"></ul>
+  </div>
+</div>
+
+<button class="cta" id="cta"></button>
+
+<script>
+const C={black:['тёмный','#111214'],navy:['тёмно-синий','#1b2740'],brown:['коричневый','#4a3022'],graphite:['графит','#4b4e53']};
+const P=[
+ {id:'puffer',cat:'пуховики',name:'PUFFER 01',d:'пуховик укороченный с капюшоном',p:24900,c:['black','navy','brown','graphite'],img:c=>`puffer-${c}`,x:['пух 90/10, 750 fp','мембранная ткань, не продувается','утяжки на подоле и капюшоне','носка до −25°']},
+ {id:'hoodie',cat:'худи',name:'ZIP HOODIE',d:'укороченное худи на двойной молнии',p:8900,c:['black','navy','brown','graphite'],img:c=>`hoodie-${c}`,x:['футер с начёсом 480 г/м²','рукав-баллон, плотные манжеты','двусторонняя металлическая молния']},
+ {id:'crew',cat:'свитшоты',name:'CREWNECK',d:'свитшот укороченный',p:7400,c:['black','navy','brown','graphite'],img:c=>`crew-${c}`,x:['футер 420 г/м²','спущенное плечо','широкая резинка по низу']},
+ {id:'tee-over',cat:'футболки',name:'TEE OVERSIZE',d:'футболка оверсайз',p:4400,c:['black','navy','brown','graphite'],img:c=>`tee-over-${c}`,x:['хлопок 260 г/м²','коробчатый крой','плотная горловина']},
+ {id:'tee-true',cat:'футболки',name:'TEE TRUE FIT',d:'футболка по размеру',p:3900,c:['black','navy','brown','graphite'],img:c=>`tee-true-${c}`,x:['хлопок 220 г/м²','классическая посадка','логотип на груди слева']},
+ {id:'scarf',cat:'аксессуары',name:'SCARF',d:'шарф в широкую полоску',p:3400,c:['black','brown'],cn:{black:'тёмный / графит',brown:'коричневый / синий'},img:c=>`scarf-${c}`,x:['шерсть с акрилом','вязаная бирка NOVAX'],one:true},
+ {id:'beanie',cat:'аксессуары',name:'BEANIE RAW',d:'шапка с объёмным логотипом',p:2900,c:['black','brown'],img:c=>`beanie-${c}`,x:['плотный джерси','логотип аппликацией с сырым краем'],one:true}
+];
+const cats=['все',...new Set(P.map(p=>p.cat))];
+const tg=window.Telegram&&Telegram.WebApp;
+const rub=n=>n.toLocaleString('ru-RU')+' ₽';
+let cur='все',open=null,sel={},list=[];
+
+if(tg){tg.ready();tg.expand();try{tg.setHeaderColor('#0b1426');tg.setBackgroundColor('#03060c');tg.setBottomBarColor&&tg.setBottomBarColor('#03060c')}catch(e){}}
+
+function store(get){
+  return new Promise(r=>{
+    if(tg&&tg.CloudStorage&&tg.initData){
+      if(get) tg.CloudStorage.getItem('novax_list',(e,v)=>{try{r(JSON.parse(v||'[]'))}catch(_){r([])}});
+      else tg.CloudStorage.setItem('novax_list',JSON.stringify(list),()=>r());
+    }else{
+      try{ if(get) r(JSON.parse(localStorage.getItem('novax_list')||'[]')); else {localStorage.setItem('novax_list',JSON.stringify(list));r()} }catch(_){r(get?[]:undefined)}
+    }
+  });
+}
+const key=()=>open.id+':'+sel.c+':'+(sel.s||'one');
+const inList=id=>list.some(k=>k.startsWith(id+':'));
+
+function renderCats(){
+  document.getElementById('cats').innerHTML=cats.map(c=>`<button class="cat" aria-pressed="${c===cur}" data-c="${c}">${c}</button>`).join('');
+}
+function renderGrid(){
+  const items=P.filter(p=>cur==='все'||p.cat===cur);
+  document.getElementById('grid').innerHTML=items.map((p,i)=>`
+    <button class="card" data-id="${p.id}" style="animation-delay:${i*70}ms">
+      <div class="ph"><img src="img/${p.img(p.c[0])}.webp" alt="${p.d}" loading="lazy"></div>
+      <div class="nm">${p.name}</div>
+      <div class="ds">${p.d}</div>
+      <div class="row"><span class="pr">${rub(p.p)}</span><span class="dots">${p.c.map(c=>`<i style="background:${C[c][1]}"></i>`).join('')}</span></div>
+      ${inList(p.id)?'<span class="heart">в списке</span>':''}
+    </button>`).join('');
+  document.getElementById('wcount').textContent=list.length;
+}
+function renderSheet(){
+  const p=open;
+  document.getElementById('pimg').src=`img/${p.img(sel.c)}.webp`;
+  document.getElementById('pimg').alt=p.d;
+  document.getElementById('pt').textContent=p.name;
+  document.getElementById('pd').textContent=p.d;
+  document.getElementById('pp').textContent=rub(p.p);
+  document.getElementById('pc').innerHTML=p.c.map(c=>`<button class="opt" data-col="${c}" aria-pressed="${c===sel.c}"><i style="background:${C[c][1]}"></i>${(p.cn&&p.cn[c])||C[c][0]}</button>`).join('');
+  document.getElementById('szl').hidden=!!p.one;
+  document.getElementById('ps').innerHTML=p.one?'':['S','M','L','XL'].map(s=>`<button class="opt" data-sz="${s}" aria-pressed="${s===sel.s}">${s}</button>`).join('');
+  document.getElementById('px').innerHTML=p.x.map(t=>`<li>${t}</li>`).join('');
+  updateCta();
+}
+function ctaText(){
+  if(!open) return list.length?`мой список: ${list.length}`:'';
+  if(!open.one&&!sel.s) return 'выбери размер';
+  return list.includes(key())?'убрать из списка':'хочу первым · в список';
+}
+function updateCta(){
+  const t=ctaText();
+  if(tg&&tg.MainButton&&tg.initData){
+    if(!t){tg.MainButton.hide();return}
+    tg.MainButton.setParams({text:t,color:'#e9eef6',text_color:'#03060c'});
+    tg.MainButton.show();
+  }else{
+    const b=document.getElementById('cta');b.textContent=t;b.className=t?'cta web':'cta';
+  }
+}
+async function onCta(){
+  if(!open){ if(list.length) showList(); return }
+  if(!open.one&&!sel.s){ tg&&tg.HapticFeedback&&tg.HapticFeedback.notificationOccurred('warning'); return }
+  const k=key(); const had=list.includes(k);
+  list=had?list.filter(x=>x!==k):[...list,k];
+  await store(false);
+  tg&&tg.HapticFeedback&&tg.HapticFeedback.notificationOccurred('success');
+  renderGrid();updateCta();
+}
+function showList(){
+  const txt=list.map(k=>{const [id,c,s]=k.split(':');const p=P.find(x=>x.id===id);return `${p.name}, ${(p.cn&&p.cn[c])||C[c][0]}${s!=='one'?', '+s:''}`}).join('\n');
+  if(tg&&tg.showAlert) tg.showAlert('в твоём списке:\n'+txt);
+}
+function openSheet(id){
+  open=P.find(p=>p.id===id);sel={c:open.c[0],s:null};
+  const s=document.getElementById('sheet');s.classList.add('open');s.setAttribute('aria-hidden','false');
+  renderSheet();requestAnimationFrame(()=>requestAnimationFrame(()=>s.classList.add('show')));
+  tg&&tg.BackButton&&tg.BackButton.show();
+}
+function closeSheet(){
+  const s=document.getElementById('sheet');s.classList.remove('show');s.setAttribute('aria-hidden','true');
+  setTimeout(()=>s.classList.remove('open'),450);open=null;updateCta();
+  tg&&tg.BackButton&&tg.BackButton.hide();
+}
+document.addEventListener('click',e=>{
+  const c=e.target.closest('.cat');if(c){cur=c.dataset.c;renderCats();renderGrid();return}
+  const k=e.target.closest('.card');if(k){openSheet(k.dataset.id);return}
+  const col=e.target.closest('[data-col]');if(col){sel.c=col.dataset.col;renderSheet();return}
+  const sz=e.target.closest('[data-sz]');if(sz){sel.s=sz.dataset.sz;tg&&tg.HapticFeedback&&tg.HapticFeedback.selectionChanged();renderSheet();return}
+  if(e.target.id==='shade'||e.target.id==='close'){closeSheet();return}
+  if(e.target.id==='cta'){onCta()}
+});
+if(tg){tg.MainButton.onClick(onCta);tg.BackButton.onClick(closeSheet)}
+(async()=>{list=await store(true);renderCats();renderGrid();updateCta()})();
+</script>
+</body>
+</html>
