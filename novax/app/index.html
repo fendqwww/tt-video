@@ -165,13 +165,13 @@ img{display:block;max-width:100%}
 <script>
 const C={black:['тёмный','#111214'],navy:['тёмно-синий','#1b2740'],brown:['коричневый','#4a3022'],graphite:['графит','#4b4e53']};
 const P=[
- {id:'puffer',cat:'пуховики',name:'PUFFER 01',d:'пуховик укороченный с капюшоном',p:24900,c:['black','navy','brown','graphite'],img:c=>`puffer-${c}`,x:['пух 90/10, 750 fp','мембранная ткань, не продувается','утяжки на подоле и капюшоне','носка до −25°']},
- {id:'hoodie',cat:'худи',name:'ZIP HOODIE',d:'укороченное худи на двойной молнии',p:8900,c:['black','navy','brown','graphite'],img:c=>`hoodie-${c}`,x:['футер с начёсом 480 г/м²','рукав-баллон, плотные манжеты','двусторонняя металлическая молния']},
- {id:'crew',cat:'свитшоты',name:'CREWNECK',d:'свитшот укороченный',p:7400,c:['black','navy','brown','graphite'],img:c=>`crew-${c}`,x:['футер 420 г/м²','спущенное плечо','широкая резинка по низу']},
- {id:'tee-over',cat:'футболки',name:'TEE OVERSIZE',d:'футболка оверсайз',p:4400,c:['black','navy','brown','graphite'],img:c=>`tee-over-${c}`,x:['хлопок 260 г/м²','коробчатый крой','плотная горловина']},
- {id:'tee-true',cat:'футболки',name:'TEE TRUE FIT',d:'футболка по размеру',p:3900,c:['black','navy','brown','graphite'],img:c=>`tee-true-${c}`,x:['хлопок 220 г/м²','классическая посадка','логотип на груди слева']},
- {id:'scarf',cat:'аксессуары',name:'SCARF',d:'шарф в широкую полоску',p:3400,c:['black','brown'],cn:{black:'тёмный / графит',brown:'коричневый / синий'},img:c=>`scarf-${c}`,x:['шерсть с акрилом','вязаная бирка NOVAX'],one:true},
- {id:'beanie',cat:'аксессуары',name:'BEANIE RAW',d:'шапка с объёмным логотипом',p:2900,c:['black','brown'],img:c=>`beanie-${c}`,x:['плотный джерси','логотип аппликацией с сырым краем'],one:true}
+ {id:'puffer',cat:'пуховики',name:'ZERO',d:'пуховик укороченный с капюшоном',p:24900,c:['black','navy','brown','graphite'],img:c=>`puffer-${c}`,x:['пух 90/10, 750 fp','мембранная ткань, не продувается','утяжки на подоле и капюшоне','носка до −25°']},
+ {id:'hoodie',cat:'худи',name:'NIGHT ZIP',d:'укороченное худи на двойной молнии',p:8900,c:['black','navy','brown','graphite'],img:c=>`hoodie-${c}`,x:['футер с начёсом 480 г/м²','рукав-баллон, плотные манжеты','двусторонняя металлическая молния']},
+ {id:'crew',cat:'свитшоты',name:'QUIET CREW',d:'свитшот укороченный',p:7400,c:['black','navy','brown','graphite'],img:c=>`crew-${c}`,x:['футер 420 г/м²','спущенное плечо','широкая резинка по низу']},
+ {id:'tee-over',cat:'футболки',name:'BOX TEE',d:'футболка оверсайз',p:4400,c:['black','navy','brown','graphite'],img:c=>`tee-over-${c}`,x:['хлопок 260 г/м²','коробчатый крой','плотная горловина']},
+ {id:'tee-true',cat:'футболки',name:'CORE TEE',d:'футболка по размеру',p:3900,c:['black','navy','brown','graphite'],img:c=>`tee-true-${c}`,x:['хлопок 220 г/м²','классическая посадка','логотип на груди слева']},
+ {id:'scarf',cat:'аксессуары',name:'FROST SCARF',d:'шарф в широкую полоску',p:3400,c:['black','brown'],cn:{black:'тёмный / графит',brown:'коричневый / синий'},img:c=>`scarf-${c}`,x:['шерсть с акрилом','вязаная бирка NOVAX'],one:true},
+ {id:'beanie',cat:'аксессуары',name:'STAMP BEANIE',d:'шапка с объёмным логотипом',p:2900,c:['black','brown'],img:c=>`beanie-${c}`,x:['плотный джерси','логотип аппликацией с сырым краем'],one:true}
 ];
 const cats=['все',...new Set(P.map(p=>p.cat))];
 const tg=window.Telegram&&Telegram.WebApp;
