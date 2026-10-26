@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<title>NOVA®</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,600;14..32,700;14..32,800;14..32,900&family=Michroma&display=swap">
+<style>
+:root{
+  --bg:#03060c;
+  --navy:#0b1426;
+  --line:rgba(190,205,230,.16);
+  --glass:rgba(150,175,215,.07);
+  --text:#e9eef6;
+  --mute:#8592a6;
+  --accent:#9db8dc;
+  --f:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--text);font-family:var(--f);font-weight:600;font-size:15px;line-height:1.45}
+body{min-height:100vh;background:
+  radial-gradient(120% 60% at 50% -10%,rgba(48,92,170,.28),transparent 60%),
+  linear-gradient(180deg,var(--navy),var(--bg) 55%);
+  background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.35;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:44px 44px;mask-image:radial-gradient(80% 50% at 50% 0%,#000,transparent 75%);-webkit-mask-image:radial-gradient(80% 50% at 50% 0%,#000,transparent 75%)}
+.wrap{position:relative;max-width:560px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top)) max(16px,env(safe-area-inset-right)) calc(110px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+img{display:block;max-width:100%}
+
+/* шапка */
+.top{display:flex;justify-content:space-between;align-items:center;padding-block:6px 18px}
+.logo{font-family:Michroma,var(--f);font-weight:400;font-size:19px;letter-spacing:.12em;display:inline-block}.logo sup{font-family:var(--f);font-size:.45em;font-weight:700;letter-spacing:0;margin-left:2px}
+.tag{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+.wish{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--mute)}
+.wish b{min-width:22px;height:22px;border-radius:11px;display:grid;place-items:center;background:var(--glass);border:1px solid var(--line);color:var(--text);font-size:12px}
+
+/* первый экран */
+.hero{position:relative;border-radius:24px;overflow:hidden;border:1px solid var(--line);background:#05080f}
+.hero img{width:100%;aspect-ratio:16/9;object-fit:cover;opacity:.92}
+.hero .cap{position:absolute;left:0;right:0;bottom:0;padding:18px;background:linear-gradient(transparent,rgba(3,6,12,.9));display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.h1{margin:0;font-weight:900;font-size:30px;line-height:.9;text-transform:uppercase;transform:scaleY(1.5);transform-origin:left bottom;letter-spacing:.01em}
+.pill{flex:none;font-size:12px;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border-radius:99px;background:rgba(157,184,220,.14);border:1px solid rgba(157,184,220,.35);color:var(--accent)}
+.lead{color:var(--mute);margin:14px 2px 0}
+
+/* фильтр */
+.cats{display:flex;gap:8px;overflow-x:auto;margin:22px -16px 14px;padding:0 16px;scrollbar-width:none}
+.cats::-webkit-scrollbar{display:none}
+.cat{flex:none;padding:9px 14px;border-radius:99px;border:1px solid var(--line);background:var(--glass);font-size:14px;color:var(--mute);transition:background .3s,color .3s,border-color .3s}
+.cat[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+
+/* сетка */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.card{position:relative;text-align:left;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(150,175,215,.09),rgba(150,175,215,.03));padding:10px 12px 14px;display:grid;gap:8px;min-width:0;opacity:0;transform:translateY(10px);animation:in .7s cubic-bezier(.16,1,.3,1) forwards}
+.card .ph{aspect-ratio:1;border-radius:14px;background:radial-gradient(70% 60% at 50% 40%,rgba(120,150,200,.16),transparent 70%)}
+.card .ph img{width:100%;height:100%;object-fit:contain}
+.card .nm{font-weight:800;font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+.card .ds{font-size:13px;color:var(--mute);margin-top:-6px}
+.row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.pr{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-variant-numeric:tabular-nums}
+.dots{display:flex;gap:4px}
+.dots i{width:10px;height:10px;border-radius:50%;border:1px solid rgba(255,255,255,.25)}
+.card .heart{position:absolute;top:12px;right:12px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+@keyframes in{to{opacity:1;transform:none}}
+
+/* о бренде */
+.info{margin-top:26px;display:grid;gap:10px}
+.box{border-radius:20px;border:1px solid var(--line);background:var(--glass);padding:16px}
+.box h3{margin:0 0 6px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);font-weight:700}
+.box p{margin:0}
+.box ul{margin:0;padding:0;list-style:none;display:grid;gap:6px}
+.box li{display:flex;justify-content:space-between;gap:10px}
+.box li span:last-child{color:var(--mute)}
+
+/* карточка товара */
+.sheet{position:fixed;inset:0;z-index:20;display:none}
+.sheet.open{display:block}
+.shade{position:absolute;inset:0;background:rgba(2,4,9,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);opacity:0;transition:opacity .4s}
+.panel{position:absolute;left:0;right:0;bottom:0;max-height:92vh;overflow:auto;border-radius:26px 26px 0 0;border-top:1px solid var(--line);
+  background:linear-gradient(180deg,#0d172b,#060a13);padding:10px max(18px,env(safe-area-inset-right)) calc(110px + env(safe-area-inset-bottom)) max(18px,env(safe-area-inset-left));
+  transform:translateY(100%);transition:transform .55s cubic-bezier(.16,1,.3,1)}
+.sheet.show .shade{opacity:1}
+.sheet.show .panel{transform:none}
+.grab{width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 12px}
+.big{aspect-ratio:1;max-width:420px;margin:0 auto;background:radial-gradient(60% 55% at 50% 45%,rgba(120,150,200,.2),transparent 70%)}
+.big img{width:100%;height:100%;object-fit:contain;transition:opacity .25s}
+.ttl{font-weight:900;font-size:24px;text-transform:uppercase;transform:scaleY(1.4);transform-origin:left;margin:10px 0 4px}
+.sub{color:var(--mute);margin:0 0 14px}
+.lbl{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);margin:16px 0 8px;font-weight:700}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{padding:9px 14px;border-radius:12px;border:1px solid var(--line);background:var(--glass);display:flex;align-items:center;gap:8px;font-size:14px}
+.opt i{width:14px;height:14px;border-radius:50%;border:1px solid rgba(255,255,255,.3)}
+.opt[aria-pressed="true"]{border-color:var(--text);background:rgba(233,238,246,.1)}
+.spec{margin:0;padding:0;list-style:none;display:grid;gap:6px;color:var(--mute)}
+.spec li::before{content:"✦  ";color:var(--accent)}
+.close{position:absolute;top:14px;right:16px;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--glass);font-size:18px;line-height:1}
+
+
+/* v2 */
+.hero{padding:22px 18px 18px;background:radial-gradient(80% 70% at 50% 40%,rgba(70,110,180,.22),transparent 70%),#050a14}
+.hero .h1{font-size:56px;margin:46px 0 22px;letter-spacing:.08em}
+.hero .ph{aspect-ratio:auto}
+.hero .ph.mix{aspect-ratio:auto;height:150px;display:flex;align-items:flex-end;justify-content:center;gap:2px}
+.hero .ph.mix img{width:auto;height:auto;max-width:none;object-fit:contain}
+.hero .ph img{width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 18px 26px rgba(0,0,0,.5))}
+.hero .meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.fact{border-radius:16px;border:1px solid var(--line);background:var(--glass);padding:12px}
+.fact b{display:block;font-weight:900;font-size:20px;transform:scaleY(1.3);transform-origin:left;margin-bottom:4px}
+.fact span{font-size:12px;color:var(--mute)}
+.card.wide{grid-column:1/-1}
+.card.wide .ph{aspect-ratio:1}
+.card .sw{display:flex;gap:6px}
+.card .sw i{width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(255,255,255,.22);transition:border-color .3s,transform .3s}
+.card .sw i.on{border-color:var(--text);transform:scale(1.1)}
+.card .ph img{transition:opacity .25s}
+.big{aspect-ratio:auto;max-width:none}
+.big img{width:100%;max-width:420px;margin:0 auto;aspect-ratio:1;object-fit:contain}
+.big.one img{aspect-ratio:1;max-width:230px;margin:10px auto}
+.card:not(.wide) .cn{display:none}
+.details{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.details img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:14px;border:1px solid var(--line)}
+.sec{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute);font-weight:700;margin:26px 2px 10px}
+.star{width:12px;height:12px;color:var(--accent);display:inline-block;vertical-align:-1px;margin-right:6px}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;border-radius:14px;border:1px solid var(--line);background:var(--glass);margin:0 0 14px}
+.tabs button{padding:10px;border-radius:10px;font-size:14px;color:var(--mute);transition:background .3s,color .3s}
+.tabs button[aria-selected="true"]{background:var(--text);color:var(--bg)}
+.packhero{padding-bottom:20px}
+.pks{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.pk{margin:0;border-radius:20px;border:1px solid var(--line);background:linear-gradient(180deg,rgba(150,175,215,.09),rgba(150,175,215,.03));padding:14px;display:grid;gap:10px}
+.hero img.flat{width:100%;height:auto;aspect-ratio:auto;object-fit:contain;opacity:1;border-radius:16px;display:block}
+.card .pr{display:none}
+.pk img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px}
+.pk figcaption{display:grid;gap:4px}.pk b{font-size:14px;letter-spacing:.06em;text-transform:uppercase}.pk span{font-size:13px;color:var(--mute)}
+.details.six{grid-template-columns:repeat(2,1fr)}
+.details.six img{aspect-ratio:4/3}
+.cta{display:none}
+.cta.web{display:block;position:fixed;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:30;max-width:528px;margin:0 auto;padding:16px;border-radius:16px;background:var(--text);color:var(--bg);font-weight:800;text-align:center}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.card{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <span class="logo">NOVA<sup>®</sup></span>
+    <span class="wish">мой список <b id="wcount">0</b></span>
+  </header>
+
+  <nav class="tabs" role="tablist"><button role="tab" data-tab="shop" aria-selected="true">коллекция</button><button role="tab" data-tab="pack" aria-selected="false">упаковка</button></nav>
+
+  <div id="tab-shop">
+  <section class="hero">
+    <div class="tag"><svg class="star" viewBox="0 0 100 100"><path fill="currentColor" d="M50 0C51.6 38 62 48.4 100 50 62 51.6 51.6 62 50 100 48.4 62 38 51.6 0 50 38 48.4 48.4 38 50 0Z"/></svg>drop 001 · COLD</div>
+    <h1 class="h1">COLD</h1>
+    <div class="ph"><img src="img/hero.webp" alt="пуховик, худи, свитшот, футболка, шапка и шарф NOVA® в разных цветах"></div>
+    <div class="meta"><span class="tag">9 вещей · 4 цвета</span><span class="pill">soon</span></div>
+  </section>
+  <div class="facts">
+    <div class="fact"><b>9</b><span>вещей в дропе</span></div>
+    <div class="fact"><b>4</b><span>цвета на выбор</span></div>
+    <div class="fact"><b>SOON</b><span>старт продаж</span></div>
+  </div>
+
+  <nav class="cats" id="cats" aria-label="категории"></nav>
+  <main class="grid" id="grid"></main>
+
+  </div>
+
+  <div id="tab-pack" hidden>
+    <section class="hero packhero"><div class="tag">наша упаковка</div><h1 class="h1">PACK</h1><p class="lead" style="margin:0 0 14px">каждая вещь приезжает в фирменном пакете или коробке NOVA®: тишью, бирки, наклейки и открытка внутри.</p><img class="flat" src="img/pack.jpg" alt="вся упаковка NOVA®"></section>
+    <div class="pks"><figure class="pk"><img src="img/pack-1.jpg" alt="пакеты" loading="lazy"><figcaption><b>пакеты</b><span>матовый чёрный и белый zip-пакет с NOVA®</span></figcaption></figure><figure class="pk"><img src="img/pack-2.jpg" alt="коробка" loading="lazy"><figcaption><b>коробка</b><span>чёрная коробка со звездой, внутри вещь в тишью и наклейка</span></figcaption></figure><figure class="pk"><img src="img/pack-3.jpg" alt="бирки и нашивки" loading="lazy"><figcaption><b>бирки и нашивки</b><span>бирки на шнурке, тканые нашивки NOVA®</span></figcaption></figure><figure class="pk"><img src="img/pack-4.jpg" alt="наклейки и открытки" loading="lazy"><figcaption><b>наклейки и открытки</b><span>стикеры, открытка «thank you» и карточки серии</span></figcaption></figure></div>
+    <div class="sec">детали</div>
+    <div class="details"><img src="img/detail-1.jpg" alt="деталь 1" loading="lazy"><img src="img/detail-2.jpg" alt="деталь 2" loading="lazy"><img src="img/detail-3.jpg" alt="деталь 3" loading="lazy"></div>
+  </div>
+
+  <section class="info">
+    <div class="box">
+      <h3>как это работает</h3>
+      <p>открой вещь, выбери цвет и размер, нажми «хочу первым». в день старта бот напишет тебе раньше всех, а вещи из списка будут ждать в корзине.</p>
+    </div>
+    <div class="box">
+      <h3>размеры</h3>
+      <ul>
+        <li><span>S</span><span>рост 160–170</span></li>
+        <li><span>M</span><span>170–180</span></li>
+        <li><span>L</span><span>180–188</span></li>
+        <li><span>XL</span><span>188+</span></li>
+      </ul>
+    </div>
+    <div class="box">
+      <h3>посадка</h3>
+      <p>пуховики, худи, свитшоты и BOX TEE свободные: если сомневаешься, бери свой размер. CORE TEE сидит по фигуре.</p>
+    </div>
+  </section>
+</div>
+
+<div class="sheet" id="sheet" aria-hidden="true">
+  <div class="shade" id="shade"></div>
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="pt">
+    <div class="grab"></div>
+    <button class="close" id="close" aria-label="закрыть">×</button>
+    <div class="big" id="big"><img id="pimg" alt=""></div>
+    <div class="ttl" id="pt"></div>
+    <p class="sub" id="pd"></p>
+    <div class="row"><span class="pr" id="pp"></span><span class="tag">цена при старте</span></div>
+    <div class="lbl">цвет</div>
+    <div class="opts" id="pc"></div>
+    <div class="lbl" id="szl">размер</div>
+    <div class="opts" id="ps"></div>
+    <div class="lbl">детали</div>
+    <ul class="spec" id="px"></ul>
+  </div>
+</div>
+
+<button class="cta" id="cta"></button>
+
+<script>
+const C={navy:['тёмно-синий','#1b2740'],graphite:['графит','#3a3c40'],brown:['коричневый','#4a3022'],dark:['тёмный','#0b0b0d']};
+const P=[{"id": "puffer", "cat": "пуховики", "name": "PUFFER JACKET", "d": "пуховик с капюшоном", "p": 0, "c": ["navy", "graphite", "brown", "dark"], "x": ["объёмный пуховик, держит до −25°", "ветрозащитная ткань, утяжки на подоле", "вышитая звезда на рукаве, NOVA® на груди"], "one": false, "wide": false, "def": "navy"}, {"id": "zip", "cat": "худи", "name": "ZIP HOODIE", "d": "зип-худи со светящимися швами", "p": 0, "c": ["navy", "graphite", "brown", "dark"], "x": ["оверсайз, спущенное плечо, плотный капюшон", "рефлективные швы, светятся в свете фар", "молния со своим бегунком NOVA®, звезда на капюшоне"], "one": false, "wide": false, "def": "graphite"}, {"id": "hoodie", "cat": "худи", "name": "CROPPED HOODIE", "d": "кроп-худи", "p": 0, "c": ["navy", "graphite", "brown", "dark"], "x": ["укороченный свободный крой", "плотный футер с начёсом, эффект стирки", "карман-кенгуру, звезда на рукаве"], "one": false, "wide": false, "def": "brown"}, {"id": "crew", "cat": "свитшоты", "name": "SWEATSHIRT", "d": "свитшот оверсайз", "p": 0, "c": ["navy", "graphite", "brown", "dark"], "x": ["плотный футер с эффектом стирки", "объёмный рукав, широкая резинка", "NOVA® на груди"], "one": false, "wide": false, "def": "navy"}, {"id": "tee", "cat": "футболки", "name": "T-SHIRT", "d": "футболка оверсайз со светящимися швами", "p": 0, "c": ["navy", "graphite", "brown", "dark"], "x": ["плотный хлопок, эффект стирки", "рефлективные швы-кант спереди и сзади", "NOVA® на груди, бирка с размером"], "one": false, "wide": false, "def": "dark"}, {"id": "pants", "cat": "штаны", "name": "SWEATPANTS", "d": "широкие штаны со светящимися швами", "p": 0, "c": ["dark"], "x": ["свободный широкий крой, утяжки на низе", "рефлективные швы, карман на молнии сзади", "вышитая звезда NOVA®"], "one": false, "wide": false, "def": "dark"}, {"id": "cargo", "cat": "штаны", "name": "CARGO PANTS", "d": "широкие карго", "p": 0, "c": ["dark"], "x": ["водоотталкивающая техничная ткань", "карманы на магнитах, утяжки на низе", "молния со своим бегунком NOVA®"], "one": false, "wide": false, "def": "dark"}, {"id": "beanie", "cat": "аксессуары", "name": "BEANIE", "d": "шапка с нашивкой", "p": 0, "c": ["navy", "graphite", "brown", "dark"], "x": ["плотная вязка в рубчик", "нашивка NOVA® на отвороте", "один размер"], "one": true, "wide": false, "def": "graphite"}, {"id": "scarf", "cat": "аксессуары", "name": "SCARF", "d": "шарф с бахромой", "p": 0, "c": ["navy", "graphite", "brown", "dark"], "x": ["мягкая шерстяная вязка", "вышитый NOVA® на конце", "один размер"], "one": true, "wide": false, "def": "brown"}];
+P.forEach(p=>p.img=c=>`${p.id}-${c}`);
+const cats=['все',...new Set(P.map(p=>p.cat))];
+const tg=window.Telegram&&Telegram.WebApp;
+const rub=n=>n.toLocaleString('ru-RU').replace(/\s/g,' ')+' ₽';
+let cur='все',open=null,sel={},list=[],pick={};
+
+if(tg){tg.ready();tg.expand();try{tg.setHeaderColor('#0b1426');tg.setBackgroundColor('#03060c');tg.setBottomBarColor&&tg.setBottomBarColor('#03060c')}catch(e){}}
+
+function store(get){
+  return new Promise(r=>{
+    if(tg&&tg.CloudStorage&&tg.initData){
+      if(get) tg.CloudStorage.getItem('novax_list',(e,v)=>{try{r(JSON.parse(v||'[]'))}catch(_){r([])}});
+      else tg.CloudStorage.setItem('novax_list',JSON.stringify(list),()=>r());
+    }else{
+      try{ if(get) r(JSON.parse(localStorage.getItem('novax_list')||'[]')); else {localStorage.setItem('novax_list',JSON.stringify(list));r()} }catch(_){r(get?[]:undefined)}
+    }
+  });
+}
+const key=()=>open.id+':'+sel.c+':'+(sel.s||'one');
+const inList=id=>list.some(k=>k.startsWith(id+':'));
+
+function renderCats(){
+  document.getElementById('cats').innerHTML=cats.map(c=>`<button class="cat" aria-pressed="${c===cur}" data-c="${c}">${c}</button>`).join('');
+}
+function renderGrid(){
+  const items=P.filter(p=>cur==='все'||p.cat===cur);
+  document.getElementById('grid').innerHTML=items.map((p,i)=>{const c=pick[p.id]||p.def;return `
+    <div class="card${p.wide?' wide':''}" role="button" tabindex="0" data-id="${p.id}" style="animation-delay:${i*70}ms">
+      <div class="ph"><img src="img/${p.img(c)}.webp" alt="${p.name}, ${p.d}, ${C[c][0]}" loading="lazy"></div>
+      <div class="row"><span class="nm">${p.name}</span><span class="pr">soon</span></div>
+      <div class="ds">${p.d}</div>
+      <div class="row"><span class="sw">${p.c.map(k=>`<i class="${k===c?'on':''}" data-pick="${k}" title="${C[k][0]}" style="background:${C[k][1]}"></i>`).join('')}</span><span class="ds cn" style="margin:0">${C[c][0]}</span></div>
+      ${inList(p.id)?'<span class="heart">в списке</span>':''}
+    </div>`}).join('');
+  document.getElementById('wcount').textContent=list.length;
+}
+function renderSheet(){
+  const p=open;
+  document.getElementById('pimg').src=`img/${p.img(sel.c)}.webp`;
+  document.getElementById('pimg').alt=p.name+', '+p.d;
+  document.getElementById('big').className=p.wide?'big':'big one';
+  document.getElementById('pt').textContent=p.name;
+  document.getElementById('pd').textContent=p.d;
+  document.getElementById('pp').textContent='soon';
+  document.getElementById('pc').innerHTML=p.c.map(c=>`<button class="opt" data-col="${c}" aria-pressed="${c===sel.c}"><i style="background:${C[c][1]}"></i>${(p.cn&&p.cn[c])||C[c][0]}</button>`).join('');
+  document.getElementById('szl').hidden=!!p.one;
+  document.getElementById('ps').innerHTML=p.one?'':['S','M','L','XL'].map(s=>`<button class="opt" data-sz="${s}" aria-pressed="${s===sel.s}">${s}</button>`).join('');
+  document.getElementById('px').innerHTML=p.x.map(t=>`<li>${t}</li>`).join('');
+  updateCta();
+}
+function ctaText(){
+  if(!open) return list.length?`мой список: ${list.length}`:'';
+  if(!open.one&&!sel.s) return 'выбери размер';
+  return list.includes(key())?'✓ в списке · убрать':'хочу первым';
+}
+function updateCta(){
+  const t=ctaText();
+  if(tg&&tg.MainButton&&tg.initData){
+    if(!t){tg.MainButton.hide();return}
+    tg.MainButton.setParams({text:t,color:'#e9eef6',text_color:'#03060c'});
+    tg.MainButton.show();
+  }else{
+    const b=document.getElementById('cta');b.textContent=t;b.className=t?'cta web':'cta';
+  }
+}
+async function onCta(){
+  if(!open){ if(list.length) showList(); return }
+  if(!open.one&&!sel.s){ tg&&tg.HapticFeedback&&tg.HapticFeedback.notificationOccurred('warning'); return }
+  const k=key(); const had=list.includes(k);
+  list=had?list.filter(x=>x!==k):[...list,k];
+  await store(false);
+  tg&&tg.HapticFeedback&&tg.HapticFeedback.notificationOccurred('success');
+  renderGrid();updateCta();
+}
+function showList(){
+  const txt=list.map(k=>{const [id,c,s]=k.split(':');const p=P.find(x=>x.id===id);return `${p.name}, ${(p.cn&&p.cn[c])||C[c][0]}${s!=='one'?', '+s:''}`}).join('\n');
+  if(tg&&tg.showAlert) tg.showAlert('твой список на дроп:\n\n'+txt+'\n\nнапишем в боте, как только откроем продажи.'); else alert(txt);
+}
+function openSheet(id){
+  open=P.find(p=>p.id===id);sel={c:pick[id]||open.def,s:null};
+  const s=document.getElementById('sheet');s.classList.add('open');s.setAttribute('aria-hidden','false');
+  renderSheet();requestAnimationFrame(()=>requestAnimationFrame(()=>s.classList.add('show')));
+  tg&&tg.BackButton&&tg.BackButton.show();
+}
+function closeSheet(){
+  const s=document.getElementById('sheet');s.classList.remove('show');s.setAttribute('aria-hidden','true');
+  setTimeout(()=>s.classList.remove('open'),450);open=null;updateCta();
+  tg&&tg.BackButton&&tg.BackButton.hide();
+}
+document.addEventListener('click',e=>{
+  const tb=e.target.closest('[data-tab]');if(tb){document.querySelectorAll('[data-tab]').forEach(x=>x.setAttribute('aria-selected',x===tb));document.getElementById('tab-shop').hidden=tb.dataset.tab!=='shop';document.getElementById('tab-pack').hidden=tb.dataset.tab!=='pack';tg&&tg.HapticFeedback&&tg.HapticFeedback.selectionChanged();scrollTo(0,0);return}
+  const c=e.target.closest('.cat');if(c){cur=c.dataset.c;renderCats();renderGrid();return}
+  const pk=e.target.closest('[data-pick]');if(pk){const id=pk.closest('.card').dataset.id;pick[id]=pk.dataset.pick;tg&&tg.HapticFeedback&&tg.HapticFeedback.selectionChanged();renderGrid();return}
+  const k=e.target.closest('.card');if(k){openSheet(k.dataset.id);return}
+  const col=e.target.closest('[data-col]');if(col){sel.c=col.dataset.col;renderSheet();return}
+  const sz=e.target.closest('[data-sz]');if(sz){sel.s=sz.dataset.sz;tg&&tg.HapticFeedback&&tg.HapticFeedback.selectionChanged();renderSheet();return}
+  if(e.target.id==='shade'||e.target.id==='close'){closeSheet();return}
+  if(e.target.id==='cta'){onCta()}
+});
+document.addEventListener('keydown',e=>{const k=e.target.closest&&e.target.closest('.card');if(k&&(e.key==='Enter'||e.key===' ')){e.preventDefault();openSheet(k.dataset.id)}});
+if(tg){tg.MainButton.onClick(onCta);tg.BackButton.onClick(closeSheet)}
+(async()=>{list=await store(true);renderCats();renderGrid();updateCta()})();
+</script>
+</body>
+</html>
