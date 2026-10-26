@@ -1,0 +1,121 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{width:1080px;height:1920px;background:#070b18;color:#f2f5ff;font-family:'Inter Display','Inter',sans-serif;overflow:hidden;position:relative}
+.scene{position:absolute;inset:0;opacity:0}
+.dots{position:absolute;inset:0;background-image:radial-gradient(rgba(120,150,230,.22) 2px,transparent 2.5px);background-size:34px 34px}
+.glow{position:absolute;border-radius:50%;filter:blur(40px)}
+.big{font-weight:900;font-size:104px;line-height:1.04;letter-spacing:-1px;text-align:center}
+.acc{color:#4c8dff}
+.sub{position:absolute;left:70px;right:70px;top:1470px;text-align:center;font-weight:900;font-size:68px;line-height:1.18;
+ color:#fff;-webkit-text-stroke:14px #000;paint-order:stroke fill}
+.node{position:absolute;width:34px;height:34px;margin:-17px 0 0 -17px;border-radius:50%;background:#4c8dff;box-shadow:0 0 0 10px rgba(76,141,255,.25),0 0 40px #4c8dff}
+.node.ru{background:#fff;box-shadow:0 0 0 10px rgba(255,255,255,.18),0 0 40px #fff}
+.lbl{position:absolute;font-weight:800;font-size:46px;transform:translate(-50%,-120%);white-space:nowrap}
+.ping{position:absolute;font-weight:900;font-size:64px;padding:10px 26px;border-radius:22px;background:rgba(12,20,44,.95);border:5px solid #4c8dff;transform:translate(-50%,-50%);white-space:nowrap}
+.ping.bad{border-color:#ff5d6c;color:#ff8d98}
+.card{position:absolute;left:90px;right:90px;background:rgba(14,22,48,.96);border:4px solid #26386e;border-radius:40px;padding:50px 56px}
+.row{display:flex;justify-content:space-between;align-items:center;font-size:54px;font-weight:700;padding:26px 0;border-bottom:2px solid #22305c}
+.row:last-child{border-bottom:none}
+.row b{color:#4c8dff;font-weight:900}
+.term{position:absolute;left:60px;right:60px;top:330px;height:900px;background:#05070d;border-radius:30px;border:3px solid #1d2a50;overflow:hidden;
+ font-family:'JetBrains Mono',monospace;font-size:40px;line-height:1.55;padding:110px 44px 40px}
+.term .bar{position:absolute;left:0;right:0;top:0;height:74px;background:#121a33;display:flex;align-items:center;gap:16px;padding-left:30px}
+.term .bar i{width:22px;height:22px;border-radius:50%;display:block}
+.ok{color:#5fe38b}.cm{color:#7d8bb3}.pr{color:#4c8dff}
+.chk{display:flex;align-items:center;gap:30px;font-size:54px;font-weight:700;padding:22px 0}
+.chk .c{width:74px;height:74px;border-radius:50%;background:#173a26;color:#5fe38b;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:50px;flex:none}
+</style></head><body>
+<!-- 1 хук -->
+<div class="scene" id="s1"><div class="dots"></div>
+ <div class="glow" style="width:900px;height:900px;left:90px;top:420px;background:rgba(76,141,255,.25)"></div>
+ <div id="globe" style="position:absolute;left:290px;top:560px;width:500px;height:500px;border-radius:50%;border:6px solid #4c8dff;
+   background:radial-gradient(circle at 35% 30%,#1c2d63,#0a1230 70%);box-shadow:0 0 120px rgba(76,141,255,.45)">
+   <div style="position:absolute;inset:0;border-radius:50%;border:3px solid rgba(76,141,255,.5);transform:scaleX(.45)"></div>
+   <div style="position:absolute;inset:0;border-radius:50%;border:3px solid rgba(76,141,255,.35);transform:scaleY(.45)"></div>
+   <div id="pin" class="node" style="left:230px;top:170px"></div></div>
+ <div class="big" id="h1" style="position:absolute;left:60px;right:60px;top:200px">мой vpn живёт<br>в <span class="acc">нидерландах</span></div>
+</div>
+<!-- 2 карта и пинг -->
+<div class="scene" id="s2"><div class="dots"></div>
+ <svg width="1080" height="1920" style="position:absolute;inset:0">
+  <path id="l1" d="M760 720 Q 600 560 470 650" stroke="#4c8dff" stroke-width="10" fill="none" stroke-linecap="round"/>
+  <path id="l2" d="M760 720 Q 450 1050 170 1120" stroke="#ff5d6c" stroke-width="10" fill="none" stroke-linecap="round" stroke-dasharray="4 26"/>
+ </svg>
+ <div class="node ru" style="left:760px;top:720px"></div><div class="lbl" style="left:760px;top:720px">москва</div>
+ <div class="node" style="left:470px;top:650px"></div><div class="lbl" style="left:470px;top:650px">амстердам</div>
+ <div class="node" id="us" style="left:170px;top:1120px;background:#ff5d6c;box-shadow:0 0 40px #ff5d6c"></div><div class="lbl" id="usl" style="left:230px;top:1120px">нью-йорк</div>
+ <div class="ping" id="p1" style="left:600px;top:520px">≈ 40 мс</div>
+ <div class="ping bad" id="p2" style="left:420px;top:1000px">110+ мс</div>
+ <div class="big" style="position:absolute;left:60px;right:60px;top:200px;font-size:84px">ближе сервер =<br><span class="acc">быстрее</span></div>
+</div>
+<!-- 3 конфигурация сервера -->
+<div class="scene" id="s3"><div class="dots"></div>
+ <div class="big" style="position:absolute;left:60px;right:60px;top:200px;font-size:84px">сервер на <span class="acc">100 человек</span></div>
+ <div class="card" id="c3" style="top:470px">
+  <div style="font-size:42px;color:#7d8bb3;font-weight:700;margin-bottom:10px">vps · амстердам</div>
+  <div class="row r"><span>процессор</span><b>1 ядро</b></div>
+  <div class="row r"><span>память</span><b>1 гб</b></div>
+  <div class="row r"><span>диск</span><b>25 гб</b></div>
+  <div class="row r"><span>трафик</span><b>много</b></div>
+ </div>
+</div>
+<!-- 4 терминал -->
+<div class="scene" id="s4"><div class="dots"></div>
+ <div class="big" style="position:absolute;left:60px;right:60px;top:150px;font-size:80px">xray + <span class="acc">reality</span></div>
+ <div class="term"><div class="bar"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div>
+  <div id="tt"></div></div>
+</div>
+<!-- 5 проверка ip -->
+<div class="scene" id="s5"><div class="dots"></div>
+ <div class="big" style="position:absolute;left:60px;right:60px;top:200px;font-size:84px">адрес <span class="acc">чистый?</span></div>
+ <div class="card" style="top:470px">
+  <div style="font-family:'JetBrains Mono';font-size:58px;font-weight:700;margin-bottom:24px">ip 185.•••.•••.12</div>
+  <div class="chk k"><div class="c">✓</div>нет в списках блокировок</div>
+  <div class="chk k"><div class="c">✓</div>не помечен как спам</div>
+  <div class="chk k"><div class="c">✓</div>открывается из россии</div>
+ </div>
+</div>
+<!-- 6 финал -->
+<div class="scene" id="s6"><div class="dots"></div>
+ <div class="glow" style="width:900px;height:900px;left:90px;top:450px;background:rgba(76,141,255,.22)"></div>
+ <div class="big" style="position:absolute;left:60px;right:60px;top:430px;font-size:150px">NOVA</div>
+ <div class="card" style="top:700px;text-align:center"><div style="font-size:46px;color:#c9d3ef;font-weight:700">бот в телеграме</div>
+  <div style="font-size:76px;font-weight:900;color:#4c8dff;margin-top:14px">@NOVA_VLESS_BOT</div></div>
+</div>
+<div class="sub" id="sub"></div>
+<script>
+const ease=x=>x<=0?0:x>=1?1:1-Math.pow(1-x,3);
+let DATA; fetch('data.json').then(r=>r.json()).then(d=>{DATA=d; window.READY=true;});
+const MAP=[1,2,2,3,4,4,5,6,6];
+const TERM=[['cm','','# официальный скрипт xray-install'],['pr','$ ','bash install-release.sh install'],['ok','','✓ xray установлен'],['pr','$ ','xray x25519'],
+ ['pr','$ ','nano /etc/xray/config.json'],['cm','','  "security": "reality",'],['cm','','  "dest": "www.microsoft.com:443"'],['pr','$ ','systemctl restart xray'],['ok','','✓ xray запущен, порт 443']];
+window.renderAt=(t)=>{
+  const S=DATA.segs; let k=0; S.forEach((s,i)=>{if(t>=s.t)k=i;});
+  const sc=MAP[k]; const first=S[MAP.indexOf(sc)].t; const lt=t-first;
+  for(let i=1;i<=6;i++){const el=document.getElementById('s'+i); el.style.opacity=i==sc?Math.min(1,lt/.18):0;
+    el.style.transform=i==sc?`scale(${1.06-0.06*ease(lt/.5)+lt*.004})`:'';}
+  // сцена 1
+  document.getElementById('globe').style.transform=`rotate(${t*8}deg)`;
+  document.getElementById('pin').style.transform=`scale(${1+.25*Math.sin(t*6)})`;
+  // сцена 2
+  if(sc==2){const L1=document.getElementById('l1'),L2=document.getElementById('l2'); const a=L1.getTotalLength();
+    L1.style.strokeDasharray=a; L1.style.strokeDashoffset=a*(1-ease(lt/.8));
+    const t2=t-S[2].t; L2.style.opacity=t2>0?1:0; L2.style.strokeDashoffset=-t2*60;
+    document.getElementById('p1').style.opacity=ease((lt-.6)/.3); document.getElementById('p1').style.transform=`translate(-50%,-50%) scale(${.6+.4*ease((lt-.6)/.3)})`;
+    const p2=document.getElementById('p2'); p2.style.opacity=ease((t2-1.4)/.3); p2.style.transform=`translate(-50%,-50%) scale(${.6+.4*ease((t2-1.4)/.3)})`;
+    ['us','usl'].forEach(id=>document.getElementById(id).style.opacity=t2>0?1:.0);}
+  // сцена 3
+  if(sc==3){document.querySelectorAll('#s3 .r').forEach((r,i)=>{const a=ease((lt-.25-i*.45)/.3); r.style.opacity=a; r.style.transform=`translateX(${(1-a)*80}px)`;});}
+  // сцена 4: печать терминала
+  if(sc==4){const total=S[5].t+S[5].d-first; const perLine=(total-.3)/TERM.length; let html='';
+    TERM.forEach((ln,i)=>{const lt2=lt-.2-i*perLine; if(lt2<0)return; const n=Math.floor(ease(lt2/(perLine*.75))*ln[2].length);
+      html+=`<div><span class="pr">${ln[1]}</span><span class="${ln[1]?'':ln[0]}">${ln[2].slice(0,n)}</span></div>`;});
+    document.getElementById('tt').innerHTML=html;}
+  // сцена 5
+  if(sc==5){document.querySelectorAll('#s5 .k').forEach((r,i)=>{const a=ease((lt-.5-i*.8)/.3); r.style.opacity=a; r.style.transform=`scale(${.85+.15*a})`;});}
+  // субтитры
+  const cur=S.find(s=>t>=s.t&&t<s.t+s.d+.12); const sub=document.getElementById('sub');
+  sub.textContent=cur?cur.text.toLowerCase():''; sub.style.transform=cur?`scale(${.92+.08*ease((t-cur.t)/.12)})`:'';
+};
+</script></body></html>
